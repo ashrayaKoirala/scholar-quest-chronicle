@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Atom, Book, Calendar, Code, PiSquare, BookOpen, Timer, Award } from "lucide-react";
+import { Atom, Book, Calendar, Code, PiSquare, BookOpen, Timer, Award, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/context/AppContext";
 
@@ -43,6 +43,7 @@ export default function Sidebar() {
     { id: "exams", icon: Calendar, label: "Exam Schedule" },
     { id: "timer", icon: Timer, label: "Study Timer" },
     { id: "flashcards", icon: Book, label: "Flashcards" },
+    { id: "notes", icon: FileText, label: "Notes" },
   ];
 
   return (

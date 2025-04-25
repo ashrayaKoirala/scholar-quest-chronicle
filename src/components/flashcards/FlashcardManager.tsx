@@ -17,6 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateId } from "@/utils/helpers";
 import { Book, Plus, Save, Trash } from "lucide-react";
 import FlashcardStudy from "./FlashcardStudy";
+import FlashcardImport from "./FlashcardImport";
 
 export default function FlashcardManager() {
   const { flashcardDecks, addFlashcardDeck, updateFlashcardDeck } = useApp();
@@ -130,6 +131,10 @@ export default function FlashcardManager() {
     setActiveTab("study");
   };
 
+  const handleImportComplete = () => {
+    setActiveTab("study");
+  };
+
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -137,7 +142,7 @@ export default function FlashcardManager() {
           <TabsTrigger value="decks">Decks</TabsTrigger>
           <TabsTrigger 
             value="create" 
-            disabled={activeTab === "study"}
+            disabled={activeTab === "study" || activeTab === "import"}
           >
             Create Deck
           </TabsTrigger>
@@ -146,6 +151,12 @@ export default function FlashcardManager() {
             disabled={!selectedDeckId}
           >
             Study
+          </TabsTrigger>
+          <TabsTrigger 
+            value="import" 
+            disabled={!selectedDeckId}
+          >
+            Import CSV
           </TabsTrigger>
         </TabsList>
         
@@ -275,12 +286,30 @@ export default function FlashcardManager() {
           </Card>
         </TabsContent>
         
+        <TabsContent value="import">
+          {selectedDeckId && (
+            <FlashcardImport 
+              onImportComplete={handleImportComplete} 
+              selectedDeckId={selectedDeckId} 
+            />
+          )}
+        </TabsContent>
+        
         <TabsContent value="study" className="space-y-4">
           {selectedDeckId && getSelectedDeck() && (
             <>
               <Card>
                 <CardHeader>
-                  <CardTitle>{getSelectedDeck()?.name}</CardTitle>
+                  <CardTitle className="flex justify-between items-center">
+                    <span>{getSelectedDeck()?.name}</span>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={() => setActiveTab("import")}
+                    >
+                      Import from CSV
+                    </Button>
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <FlashcardStudy deck={getSelectedDeck()!} />

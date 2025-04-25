@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { appData } from "@/data/appData";
 import { Pause, Play, RotateCcw, Forward } from "lucide-react";
 import { toast } from "@/components/ui/sonner";
@@ -16,18 +17,22 @@ export enum TimerStatus {
 
 export default function StudyTimer() {
   const { addCharacterXP } = useApp();
-  const [selectedPreset, setSelectedPreset] = useState(appData.studyTools.timer.presets[0]);
-  const [timeRemaining, setTimeRemaining] = useState(selectedPreset.duration * 60);
+  
+  // Max hours in minutes (4 hours = 240 minutes)
+  const maxMinutes = 240;
+  
+  const [selectedMinutes, setSelectedMinutes] = useState(25);
+  const [timeRemaining, setTimeRemaining] = useState(selectedMinutes * 60);
   const [status, setStatus] = useState<TimerStatus>(TimerStatus.IDLE);
   const [breakTimeRemaining, setBreakTimeRemaining] = useState(appData.studyTools.timer.breakDurations.short * 60);
   const timer = useRef<number | null>(null);
 
-  // Update time remaining when preset changes
+  // Update time remaining when duration changes
   useEffect(() => {
     if (status === TimerStatus.IDLE) {
-      setTimeRemaining(selectedPreset.duration * 60);
+      setTimeRemaining(selectedMinutes * 60);
     }
-  }, [selectedPreset, status]);
+  }, [selectedMinutes, status]);
 
   // Handle timer ticking
   useEffect(() => {
@@ -72,7 +77,7 @@ export default function StudyTimer() {
 
   const resetTimer = () => {
     setStatus(TimerStatus.IDLE);
-    setTimeRemaining(selectedPreset.duration * 60);
+    setTimeRemaining(selectedMinutes * 60);
     setBreakTimeRemaining(appData.studyTools.timer.breakDurations.short * 60);
   };
 
@@ -82,7 +87,7 @@ export default function StudyTimer() {
 
   const onTimerComplete = () => {
     // Award XP based on duration
-    const xpGained = Math.ceil(selectedPreset.duration / 5);
+    const xpGained = Math.ceil(selectedMinutes / 5);
     addCharacterXP(xpGained);
     
     toast("Study session completed", {
@@ -101,11 +106,33 @@ export default function StudyTimer() {
     resetTimer();
   };
 
-  // Format seconds to MM:SS
+  const handleSliderChange = (value: number[]) => {
+    setSelectedMinutes(value[0]);
+  };
+
+  // Format seconds to MM:SS or HH:MM:SS
   const formatTime = (seconds: number): string => {
-    const mins = Math.floor(seconds / 60);
+    const hours = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
+    
+    if (hours > 0) {
+      return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // Format minutes for display
+  const formatDuration = (minutes: number): string => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    
+    if (hours > 0) {
+      return `${hours}h ${mins > 0 ? `${mins}m` : ''}`;
+    }
+    
+    return `${mins} minutes`;
   };
 
   // Calculate progress percentage
@@ -114,7 +141,7 @@ export default function StudyTimer() {
       const totalBreakTime = appData.studyTools.timer.breakDurations.short * 60;
       return ((totalBreakTime - breakTimeRemaining) / totalBreakTime) * 100;
     } else {
-      const totalTime = selectedPreset.duration * 60;
+      const totalTime = selectedMinutes * 60;
       return ((totalTime - timeRemaining) / totalTime) * 100;
     }
   };
@@ -152,20 +179,35 @@ export default function StudyTimer() {
           </p>
         </div>
         
-        {status !== TimerStatus.BREAK && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
-            {appData.studyTools.timer.presets.map((preset) => (
-              <Button
-                key={preset.name}
-                variant={selectedPreset.name === preset.name ? "default" : "outline"}
-                size="sm"
-                className="w-full"
-                onClick={() => setSelectedPreset(preset)}
-                disabled={status !== TimerStatus.IDLE}
-              >
-                {preset.name}
-              </Button>
-            ))}
+        {status === TimerStatus.IDLE && (
+          <div className="space-y-6 mb-6">
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-sm font-medium">Study Duration: {formatDuration(selectedMinutes)}</span>
+                <span className="text-xs text-gray-500">Max: {formatDuration(maxMinutes)}</span>
+              </div>
+              <Slider 
+                defaultValue={[selectedMinutes]} 
+                max={maxMinutes}
+                min={5}
+                step={5}
+                onValueChange={handleSliderChange}
+              />
+            </div>
+            
+            <div className="flex flex-wrap gap-2">
+              {appData.studyTools.timer.presets.map((preset) => (
+                <Button
+                  key={preset.name}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSelectedMinutes(preset.duration)}
+                  className={selectedMinutes === preset.duration ? "bg-primary/10" : ""}
+                >
+                  {preset.name}
+                </Button>
+              ))}
+            </div>
           </div>
         )}
         

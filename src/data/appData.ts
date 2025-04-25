@@ -141,19 +141,19 @@ export const appData: AppData = {
   "examSchedule": {
     "physics": [
       {
-        "date": "2024-05-29",
+        "date": "2025-05-29",
         "time": "11:30 - 13:15",
         "paper": "Physics Unit 4",
         "code": "WPH14 01"
       },
       {
-        "date": "2024-06-04",
+        "date": "2025-06-04",
         "time": "08:30 - 10:15",
         "paper": "Physics Unit 5",
         "code": "WPH15 01"
       },
       {
-        "date": "2024-06-09",
+        "date": "2025-06-09",
         "time": "09:00 - 10:20",
         "paper": "Physics Unit 6 (Practical)",
         "code": "WPH16 01"
@@ -161,19 +161,19 @@ export const appData: AppData = {
     ],
     "mathematics": [
       {
-        "date": "2024-05-15",
+        "date": "2025-05-15",
         "time": "11:30 - 13:00",
         "paper": "Maths D1: Decision 1",
         "code": "WDM11 01"
       },
       {
-        "date": "2024-05-29",
+        "date": "2025-05-29",
         "time": "09:00 - 10:30",
         "paper": "Maths P3: Pure 3",
         "code": "WMA13 01"
       },
       {
-        "date": "2024-06-05",
+        "date": "2025-06-05",
         "time": "11:30 - 13:00",
         "paper": "Maths P4: Pure 4",
         "code": "WMA14 01"
@@ -181,13 +181,13 @@ export const appData: AppData = {
     ],
     "computerScience": [
       {
-        "date": "2024-05-21",
+        "date": "2025-05-21",
         "time": "11:30 - 13:00",
         "paper": "Comp Sci Paper 3 (Advanced Theory)",
         "code": "9618 32"
       },
       {
-        "date": "2024-05-23",
+        "date": "2025-05-23",
         "time": "09:00 - 11:30",
         "paper": "Comp Sci Paper 4 (Practical)",
         "code": "9618 42"
