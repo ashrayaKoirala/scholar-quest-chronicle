@@ -48,3 +48,21 @@ export const getLocalTimeString = (date: Date) => {
   // Use the browser's timezone
   return date.toLocaleString();
 };
+
+// Added functions:
+
+// Check if an exam is happening today
+export const isExamToday = (dateStr: string): boolean => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const examDate = new Date(dateStr);
+  examDate.setHours(0, 0, 0, 0);
+  
+  return today.getTime() === examDate.getTime();
+};
+
+// Generate a unique ID for new items
+export const generateId = (): string => {
+  return Date.now().toString(36) + Math.random().toString(36).substring(2);
+};
