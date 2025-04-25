@@ -33,6 +33,8 @@ interface AppContextType {
   loading: boolean;
   sidebarOpen: boolean;
   toggleSidebar: () => void;
+  isDarkMode: boolean;
+  toggleTheme: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -44,6 +46,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [activeTab, setActiveTab] = useState<string>("dashboard");
   const [loading, setLoading] = useState<boolean>(true);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check for user preference in localStorage or system preference
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme');
+      return savedTheme === 'dark' || 
+        (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
 
   // Load data on component mount
   useEffect(() => {
@@ -73,8 +84,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     loadData();
   }, []);
 
+  // Set theme on initial load and when it changes
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  const toggleTheme = () => {
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    localStorage.setItem('theme', newDarkMode ? 'dark' : 'light');
   };
 
   const addQuest = (questData: Omit<Quest, "id" | "completed">) => {
@@ -151,7 +177,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         updateFlashcardDeck,
         loading,
         sidebarOpen,
-        toggleSidebar
+        toggleSidebar,
+        isDarkMode,
+        toggleTheme
       }}
     >
       {children}

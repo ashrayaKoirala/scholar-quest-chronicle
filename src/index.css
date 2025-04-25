@@ -46,6 +46,45 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 252 95% 70%;
   }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 252 95% 65%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 252 95% 15%;
+    --accent-foreground: 252 95% 80%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 252 95% 65%;
+
+    --sidebar-background: 222.2 84% 4.9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 252 95% 65%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 252 95% 65%;
+  }
 }
 
 @layer base {
@@ -68,7 +107,7 @@
   }
   
   .stat-card {
-    @apply bg-white rounded-xl shadow-md p-4 border border-border;
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 border border-border;
   }
   
   .progress-bar {
@@ -77,5 +116,25 @@
   
   .progress-value {
     @apply h-full rounded-full bg-primary transition-all duration-500;
+  }
+
+  .glass-card {
+    @apply bg-white/70 dark:bg-gray-800/70 backdrop-blur-md border border-white/20 dark:border-gray-700/20 shadow-lg;
+  }
+  
+  .nav-link {
+    @apply transition-colors duration-200 hover:text-primary dark:hover:text-primary-foreground;
+  }
+
+  .sidebar-item {
+    @apply flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors;
+  }
+
+  .card-gradient {
+    @apply bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900;
+  }
+  
+  .animated-gradient {
+    @apply bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-[length:200%_200%] animate-gradient-shift;
   }
 }

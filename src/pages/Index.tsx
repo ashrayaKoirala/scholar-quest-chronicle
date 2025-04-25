@@ -105,6 +105,10 @@ const plannedQuestData = [
   }
 ];
 
+// The years and months for past papers
+const pastPaperYears = [2019, 2020, 2021, 2022, 2023, 2024];
+const pastPaperMonths = ["May", "October", "January"];
+
 function MainContent() {
   const { activeTab, sidebarOpen } = useApp();
 
@@ -136,7 +140,7 @@ function MainContent() {
             <SubjectOverview subjectId="physics" />
             <div className="grid grid-cols-1 gap-8">
               <PhysicsPlaylist />
-              <PastPaperChecklist subject="Physics" />
+              <PastPaperChecklist subject="Physics" years={pastPaperYears} months={pastPaperMonths} />
             </div>
           </div>
         );
@@ -145,7 +149,7 @@ function MainContent() {
         return (
           <div className="space-y-8">
             <SubjectOverview subjectId="mathematics" />
-            <PastPaperChecklist subject="Mathematics" />
+            <PastPaperChecklist subject="Mathematics" years={pastPaperYears} months={pastPaperMonths} />
           </div>
         );
         
@@ -153,7 +157,7 @@ function MainContent() {
         return (
           <div className="space-y-8">
             <SubjectOverview subjectId="computerScience" />
-            <PastPaperChecklist subject="Computer Science" />
+            <PastPaperChecklist subject="Computer Science" years={pastPaperYears} months={pastPaperMonths} />
           </div>
         );
         
@@ -224,7 +228,7 @@ const Index = () => {
   // Wrapper component with AppProvider
   return (
     <AppProvider>
-      <div className="flex bg-bgLight min-h-screen">
+      <div className="flex bg-bgLight dark:bg-gray-900 min-h-screen text-foreground">
         <Sidebar />
         <MainContent />
       </div>
