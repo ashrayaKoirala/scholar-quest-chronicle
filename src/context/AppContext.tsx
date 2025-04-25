@@ -35,6 +35,7 @@ interface AppContextType {
   toggleSidebar: () => void;
   isDarkMode: boolean;
   toggleTheme: () => void;
+  getQuestsBySubject: (subject: string) => Quest[];
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -92,6 +93,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       document.documentElement.classList.remove('dark');
     }
   }, [isDarkMode]);
+
+  // Check for incomplete quests from previous days (shifted uncompleted quests feature)
+  useEffect(() => {
+    const checkForIncompleteQuests = () => {
+      const today = new Date().toISOString().split('T')[0];
+      const savedLastCheck = localStorage.getItem('last-quest-check-date');
+      
+      if (!savedLastCheck || savedLastCheck !== today) {
+        // It's a new day, check for incomplete quests
+        const incompleteQuests = quests.filter(q => !q.completed);
+        
+        if (incompleteQuests.length > 0) {
+          // Update the quests - in a real app, we might want to modify their dates
+          // or mark them as shifted from previous days
+          
+          // Mark that we've checked today
+          localStorage.setItem('last-quest-check-date', today);
+        }
+      }
+    };
+    
+    if (quests.length > 0) {
+      checkForIncompleteQuests();
+    }
+  }, [quests]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -161,6 +187,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
   };
 
+  // Get quests filtered by subject
+  const getQuestsBySubject = (subject: string): Quest[] => {
+    return quests.filter(quest => quest.subject.toLowerCase() === subject.toLowerCase());
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -179,7 +210,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         sidebarOpen,
         toggleSidebar,
         isDarkMode,
-        toggleTheme
+        toggleTheme,
+        getQuestsBySubject
       }}
     >
       {children}

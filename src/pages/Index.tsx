@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { AppProvider } from "@/context/AppContext";
 import Sidebar from "@/components/layout/Sidebar";
@@ -219,7 +218,6 @@ function MainContent() {
       <main className="container mx-auto py-8 px-4">
         {renderContent()}
       </main>
-      {activeTab === "physics" && <PhysicsPlaylist />}
     </div>
   );
 }

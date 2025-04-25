@@ -1,10 +1,10 @@
 
-import { Menu } from "lucide-react";
+import { Menu, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/context/AppContext";
 
 export default function Header() {
-  const { activeTab, toggleSidebar } = useApp();
+  const { activeTab, toggleSidebar, isDarkMode, toggleTheme } = useApp();
   
   // Format active tab name
   const formatTabName = (tab: string) => {
@@ -27,6 +27,14 @@ export default function Header() {
         </div>
         
         <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleTheme}
+            className="dark:text-gray-300"
+          >
+            {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </Button>
           <div className="hidden md:block">
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Your learning journey awaits!
