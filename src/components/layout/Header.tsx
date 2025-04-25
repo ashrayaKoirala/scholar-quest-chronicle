@@ -17,8 +17,8 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 shadow-sm">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+    <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 shadow-sm w-full">
+      <div className="w-full px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" onClick={toggleSidebar} className="dark:text-gray-300 dark:hover:bg-gray-700">
             <Menu className="h-5 w-5" />

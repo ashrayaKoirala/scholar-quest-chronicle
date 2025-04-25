@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+
 import { AppProvider } from "@/context/AppContext";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
@@ -213,9 +213,9 @@ function MainContent() {
   };
 
   return (
-    <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-0 md:ml-64' : 'ml-0'}`}>
+    <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-0 md:ml-64' : 'ml-0'} w-full`}>
       <Header />
-      <main className="container mx-auto py-8 px-4">
+      <main className="w-full px-4 py-8">
         {renderContent()}
       </main>
     </div>
@@ -226,7 +226,7 @@ const Index = () => {
   // Wrapper component with AppProvider
   return (
     <AppProvider>
-      <div className="flex bg-bgLight dark:bg-gray-900 min-h-screen text-foreground">
+      <div className="flex bg-bgLight dark:bg-gray-900 min-h-screen text-foreground w-full">
         <Sidebar />
         <MainContent />
       </div>

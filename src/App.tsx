@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import SubjectQuestsPage from "./pages/SubjectQuestsPage";
 import "./App.css";
 
+// Create QueryClient outside component to avoid recreating it on each render
 const queryClient = new QueryClient();
 
 const App = () => {
